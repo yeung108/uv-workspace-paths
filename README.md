@@ -29,9 +29,9 @@ The extension writes to `.vscode/settings.json`:
 ```json
 {
   "python.analysis.extraPaths": [
-    "/path/to/workspace/ca-lib",
-    "/path/to/workspace/ca-messaging",
-    "/path/to/workspace/ca-user-service",
+    "/path/to/workspace/internal-package-1",
+    "/path/to/workspace/internal-package-2",
+    "/path/to/workspace/internal-package-3",
     ...
   ]
 }
@@ -68,7 +68,7 @@ npm test
 
 2. Press `F5` to launch Extension Development Host
 
-3. In the new window, open your uv workspace folder (e.g., `ca/`)
+3. In the new window, open your uv workspace folder
 
 4. Verify:
    - Status bar shows "UV Paths: X" (member count)

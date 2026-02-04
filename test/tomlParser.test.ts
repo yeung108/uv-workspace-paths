@@ -1,9 +1,11 @@
-import { describe, it, expect } from "vitest";
+/** @format */
+
+import { describe, expect, it } from "vitest";
 import {
-  parseWorkspaceMembers,
-  parseProjectName,
-  parseProjectDependencies,
   extractPackageName,
+  parseProjectDependencies,
+  parseProjectName,
+  parseWorkspaceMembers,
 } from "../src/tomlParser.js";
 
 describe("parseWorkspaceMembers", () => {
@@ -11,13 +13,17 @@ describe("parseWorkspaceMembers", () => {
     const content = `
 [tool.uv.workspace]
 members = [
-    "ca-lib",
-    "ca-user-service",
-    "ca-visit-service",
+    "internal-package-1",
+    "internal-package-2",
+    "internal-package-3",
 ]
 `;
     const members = parseWorkspaceMembers(content);
-    expect(members).toEqual(["ca-lib", "ca-user-service", "ca-visit-service"]);
+    expect(members).toEqual([
+      "internal-package-1",
+      "internal-package-2",
+      "internal-package-3",
+    ]);
   });
 
   it("returns empty array when no workspace config", () => {
@@ -64,15 +70,15 @@ describe("parseProjectDependencies", () => {
 [project]
 name = "my-service"
 dependencies = [
-    "ca-lib[django_grpc,psycopg3]",
-    "ca-messaging",
+    "internal-package-1[django_grpc,psycopg3]",
+    "internal-package-2",
     "requests>=2.0",
 ]
 `;
     const deps = parseProjectDependencies(content);
     expect(deps).toEqual([
-      "ca-lib[django_grpc,psycopg3]",
-      "ca-messaging",
+      "internal-package-1[django_grpc,psycopg3]",
+      "internal-package-2",
       "requests>=2.0",
     ]);
   });
@@ -88,11 +94,13 @@ name = "my-lib"
 
 describe("extractPackageName", () => {
   it("extracts plain package name", () => {
-    expect(extractPackageName("ca-lib")).toBe("ca-lib");
+    expect(extractPackageName("internal-package-1")).toBe("internal-package-1");
   });
 
   it("removes extras", () => {
-    expect(extractPackageName("ca-lib[django_grpc,psycopg3]")).toBe("ca-lib");
+    expect(extractPackageName("internal-package-1[django_grpc,psycopg3]")).toBe(
+      "internal-package-1",
+    );
   });
 
   it("removes version specifiers", () => {
@@ -108,6 +116,8 @@ describe("extractPackageName", () => {
   });
 
   it("trims whitespace", () => {
-    expect(extractPackageName("  ca-lib  ")).toBe("ca-lib");
+    expect(extractPackageName("  internal-package-1  ")).toBe(
+      "internal-package-1",
+    );
   });
 });
