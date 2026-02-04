@@ -1,0 +1,60 @@
+{
+  "name": "uv-workspace-paths",
+  "displayName": "UV Workspace Python Paths",
+  "description": "Automatically configures python.analysis.extraPaths from uv workspace pyproject.toml files",
+  "version": "0.1.0",
+  "publisher": "clover-health",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Other"
+  ],
+  "activationEvents": [
+    "workspaceContains:**/pyproject.toml"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "uvWorkspacePaths.refresh",
+        "title": "UV Workspace: Refresh Python Paths"
+      }
+    ],
+    "configuration": {
+      "title": "UV Workspace Paths",
+      "properties": {
+        "uvWorkspacePaths.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically refresh paths when pyproject.toml files change"
+        },
+        "uvWorkspacePaths.workspaceFile": {
+          "type": "string",
+          "default": "",
+          "description": "Path to .code-workspace file. Auto-detected if empty."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "lint": "eslint src --ext ts",
+    "test": "vitest"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.0",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "eslint": "^8.55.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.0.0"
+  },
+  "dependencies": {
+    "smol-toml": "^1.1.4"
+  }
+}
