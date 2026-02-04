@@ -2,7 +2,7 @@
   "name": "uv-workspace-paths",
   "displayName": "UV Workspace Python Paths",
   "description": "Automatically configures python.analysis.extraPaths from uv workspace pyproject.toml files",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "license": "MIT",
   "type": "module",
   "publisher": "jimmy-yeung",
