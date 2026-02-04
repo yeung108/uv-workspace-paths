@@ -1,3 +1,5 @@
+/** @format */
+
 import * as fs from "fs/promises";
 import type { DependencyGraph, WorkspaceFile } from "./types.js";
 
@@ -9,7 +11,7 @@ const GENERATED_COMMENT =
  */
 export async function updateWorkspaceFile(
   workspacePath: string,
-  dependencyGraph: DependencyGraph
+  dependencyGraph: DependencyGraph,
 ): Promise<{ updated: boolean; foldersUpdated: number }> {
   const content = await fs.readFile(workspacePath, "utf-8");
 
@@ -21,7 +23,7 @@ export async function updateWorkspaceFile(
 
   // Track what folder names exist in the workspace
   const workspaceFolderNames = new Set(
-    workspace.folders.map((f) => f.name || getBasename(f.path))
+    workspace.folders.map((f) => f.name || getBasename(f.path)),
   );
 
   // Clear old folder-scoped python.analysis settings that we manage
@@ -73,7 +75,7 @@ export async function updateWorkspaceFile(
 }
 
 /**
- * Remove JSON comments (// and /* */) for parsing.
+ * Remove JSON comments for parsing.
  * VS Code workspace files support comments but JSON.parse doesn't.
  */
 function removeJsonComments(content: string): string {
@@ -110,7 +112,7 @@ function getBasename(filePath: string): string {
  * Find the .code-workspace file in a directory.
  */
 export async function findWorkspaceFile(
-  directory: string
+  directory: string,
 ): Promise<string | undefined> {
   try {
     const entries = await fs.readdir(directory, { withFileTypes: true });
