@@ -4,6 +4,7 @@
   "description": "Automatically configures python.analysis.extraPaths from uv workspace pyproject.toml files",
   "version": "0.1.0",
   "type": "module",
+  "publisher": "jimmy-yeung",
   "engines": {
     "vscode": "^1.85.0"
   },
