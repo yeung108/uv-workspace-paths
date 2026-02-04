@@ -2,3 +2,9 @@ node_modules/
 out/
 *.vsix
 .vscode-test/
+
+# Generated JS files (TypeScript source is in src/ and test/)
+test/*.js
+test/*.js.map
+vitest.config.js
+vitest.config.js.map
