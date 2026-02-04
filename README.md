@@ -67,6 +67,108 @@ npm test
 npx vsce package
 ```
 
+## Testing Locally Against a uv Workspace
+
+There are several ways to test this extension against a real uv workspace like `ca/`:
+
+### Option 1: VS Code Extension Development Host (Recommended)
+
+1. Open the extension project in VS Code:
+   ```bash
+   code /path/to/uv-workspace-paths
+   ```
+
+2. Press `F5` to launch the Extension Development Host. This opens a new VS Code window with the extension loaded.
+
+3. In the new window, open your uv workspace:
+   - `File > Open Workspace from File...`
+   - Select `ca/ca-monorepo.code-workspace` (or your equivalent)
+
+4. The extension should activate automatically. Check:
+   - Status bar shows "UV Paths: X" (where X is the number of members with dependencies)
+   - Run command: `UV Workspace: Refresh Python Paths` from Command Palette (`Cmd+Shift+P`)
+
+5. Verify the `.code-workspace` file was updated with per-folder `extraPaths` settings.
+
+### Option 2: Install VSIX Locally
+
+1. Package the extension:
+   ```bash
+   cd /path/to/uv-workspace-paths
+   npm install
+   npm run compile
+   npx vsce package
+   ```
+
+2. Install the generated `.vsix` file:
+   ```bash
+   code --install-extension uv-workspace-paths-0.1.0.vsix
+   ```
+
+3. Open your uv workspace in VS Code and verify the extension works.
+
+4. To uninstall:
+   ```bash
+   code --uninstall-extension clover-health.uv-workspace-paths
+   ```
+
+### Option 3: Symlink to VS Code Extensions Directory
+
+1. Build the extension:
+   ```bash
+   cd /path/to/uv-workspace-paths
+   npm install
+   npm run compile
+   ```
+
+2. Symlink to VS Code extensions:
+   ```bash
+   ln -s /path/to/uv-workspace-paths ~/.vscode/extensions/uv-workspace-paths
+   ```
+
+3. Restart VS Code and open your workspace.
+
+4. To remove: delete the symlink.
+
+### Verification Checklist
+
+After testing, verify:
+
+- [ ] Extension activates (check status bar)
+- [ ] `UV Workspace: Refresh Python Paths` command works
+- [ ] `.code-workspace` file is updated with `[folder-name]` sections
+- [ ] Each folder has correct `python.analysis.extraPaths` based on its `pyproject.toml` dependencies
+- [ ] Pylance correctly resolves imports from workspace members
+- [ ] File watcher triggers refresh when `pyproject.toml` changes
+
+### Example Expected Output
+
+For a service with dependencies like:
+```toml
+# ca-visit-service/pyproject.toml
+[project]
+dependencies = [
+    "ca-lib[django_grpc,psycopg3]",
+    "ca-messaging",
+    "clover-fhir",
+    "ca-ehr-service",
+    "ca-user-service",
+]
+```
+
+The extension should generate:
+```json
+"[ca-visit-service]": {
+  "python.analysis.extraPaths": [
+    "${workspaceFolder:ca-lib}",
+    "${workspaceFolder:ca-messaging}",
+    "${workspaceFolder:clover-fhir}",
+    "${workspaceFolder:ca-ehr-service}",
+    "${workspaceFolder:ca-user-service}"
+  ]
+}
+```
+
 ## Requirements
 
 - VS Code 1.85.0 or later
