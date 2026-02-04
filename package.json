@@ -30,11 +30,6 @@
           "type": "boolean",
           "default": true,
           "description": "Automatically refresh paths when pyproject.toml files change"
-        },
-        "uvWorkspacePaths.workspaceFile": {
-          "type": "string",
-          "default": "",
-          "description": "Path to .code-workspace file. Auto-detected if empty."
         }
       }
     }
